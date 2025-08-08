@@ -1,4 +1,4 @@
-My Own version of the Fujitsu HeatPump and climate control code.
+My own version of the Fujitsu HeatPump and climate control code.
 
 This version works for me in my environment and happy to share.
 
