@@ -1,5 +1,5 @@
 substitutions:
-  device_name: fujitsu1
+  device_name: fujitsu
   friendly_name: Fujitsu Air Conditioning
   device_description: Fujitsu Air Conditioning
   esp_board: esp32dev
@@ -16,8 +16,8 @@ esp32:
   partitions: "partitions.csv"
     
 # Enable logging
-logger:
-  level: DEBUG
+# logger:
+#   level: DEBUG
 
 uart:
   id: fuji_uart
@@ -34,9 +34,13 @@ web_server:
 # Enable Home Assistant API
 api:
   password: !secret api_password
+  
+# Enable Home Assistant OTA
 ota:
   - platform: esphome
     password: !secret ota_password
+
+# Enable WIFI
 
 wifi:
   ssid: !secret wifi_ssid
