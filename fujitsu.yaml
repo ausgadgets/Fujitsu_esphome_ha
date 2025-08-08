@@ -1,0 +1,72 @@
+substitutions:
+  device_name: fujitsu1
+  friendly_name: Fujitsu Air Conditioning
+  device_description: Fujitsu Air Conditioning
+  esp_board: esp32dev
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${friendly_name}
+  comment: ${device_description}
+  build_path: "../config/esphome/fuji1_build"
+  
+esp32:
+  variant: esp32
+  board: ${esp_board}
+  partitions: "partitions.csv"
+    
+# Enable logging
+logger:
+  level: DEBUG
+
+uart:
+  id: fuji_uart
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 500
+  parity: EVEN
+  stop_bits: 1
+
+web_server:
+  version: 3
+  port: 80
+
+# Enable Home Assistant API
+api:
+  password: !secret api_password
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Fujitsu Fallback Hotspot"
+    password: !secret wifi_fallback_password
+
+captive_portal:
+
+button:
+  - platform: restart
+    name: Restart
+  - platform: safe_mode
+    name: Restart (Safe Mode)
+
+sensor:
+- platform: uptime
+  name: "Uptime"
+
+# Add the dependency to pull in the fujitsu heat pump component
+external_components:  
+  - source: components
+    components: [ fujitsu_climate ]
+  
+climate:
+- platform: fujitsu_climate
+  name: "Fujitsu"
+  uart_id: fuji_uart
+  controller_type: SECONDARY  # Options: PRIMARY or SECONDARY (default: SECONDARY)
+  log_serial_messages: false  # Options: true or false (default: false)
